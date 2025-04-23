@@ -28,7 +28,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes); // Mount post routes
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the backend server!");
+  res.send("Blog website API is running");
 });
 
 const PORT = 5000;
