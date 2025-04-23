@@ -4,11 +4,7 @@ const mongoose = require("mongoose");
 const connectMainDB = async () => {
   try {
     const conn = await mongoose.connect(
-      "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
+      "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     );
     console.log(`Main MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
@@ -21,11 +17,7 @@ const connectMainDB = async () => {
 const connectAuthDB = async () => {
   try {
     const conn = await mongoose.createConnection(
-      "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
+      "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     );
     console.log(`Auth MongoDB Connected: ${conn.host}`);
     return conn; // Return the connection object for the user authentication model

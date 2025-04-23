@@ -6,7 +6,7 @@ const PostList = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/posts")
+      .get("https://blog-v1-ezlf.vercel.app/api/posts")
       .then((response) => {
         setPosts(response.data);
       })

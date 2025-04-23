@@ -12,7 +12,7 @@ const Login = ({ setIsAuthenticated }) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://blog-v1-ezlf.vercel.app/api/auth/login",
         {
           email,
           password,

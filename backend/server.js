@@ -15,10 +15,7 @@ app.use(bodyParser.json());
 const MONGO_URI =
   "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"; // Replace with your MongoDB URI
 mongoose
-  .connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(MONGO_URI)
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
