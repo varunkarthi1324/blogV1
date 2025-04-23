@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-require("dotenv").config(); // Load environment variables from .env file
 
 const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
@@ -12,13 +11,10 @@ const Login = ({ setIsAuthenticated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        process.env.REACT_APP_API_URL,
-        {
-          email,
-          password,
-        }
-      );
+      const { data } = await axios.post("/auth/login", {
+        email,
+        password,
+      });
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-require("dotenv").config();
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -11,7 +10,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(process.env.REACT_APP_API_URL, {
+      await axios.post("/auth/register", {
         name,
         email,
         password,

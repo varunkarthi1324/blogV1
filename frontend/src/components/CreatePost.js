@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-require("dotenv").config(); // Load environment variables from .env file
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -16,11 +15,7 @@ const CreatePost = () => {
       const token = localStorage.getItem("token");
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
-      await axios.post(
-        process.env.REACT_APP_API_URL,
-        { title, content, author },
-        config
-      );
+      await axios.post("/posts", { title, content, author }, config);
       alert("Post created successfully");
       navigate("/posts"); // Redirect to the posts page
     } catch (error) {

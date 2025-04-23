@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-require("dotenv").config();
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_API_URL)
+      .get("/posts")
       .then((response) => {
         setPosts(response.data);
       })
