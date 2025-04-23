@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+require("dotenv").config();
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     axios
-      .get("https://blog-v1-ezlf.vercel.app/api/posts")
+      .get(process.env.Url)
       .then((response) => {
         setPosts(response.data);
       })

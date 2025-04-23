@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+require("dotenv").config(); // Load environment variables from .env file
 
 const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ const Login = ({ setIsAuthenticated }) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "https://blog-v1-ezlf.vercel.app/api/auth/login",
+        process.env.Url,
         {
           email,
           password,

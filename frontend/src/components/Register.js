@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+require("dotenv").config();
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -10,7 +11,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://blog-v1-ezlf.vercel.app/api/auth/register", {
+      await axios.post(process.env.Url, {
         name,
         email,
         password,
