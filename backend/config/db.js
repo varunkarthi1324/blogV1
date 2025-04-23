@@ -3,9 +3,7 @@ const mongoose = require("mongoose");
 // Connect to the main blog database (blogDB)
 const connectMainDB = async () => {
   try {
-    const conn = await mongoose.connect(
-      "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`Main MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error connecting to main DB: ${error.message}`);
@@ -16,9 +14,7 @@ const connectMainDB = async () => {
 // Connect to the user authentication database (authDB)
 const connectAuthDB = async () => {
   try {
-    const conn = await mongoose.createConnection(
-      "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    const conn = await mongoose.createConnection(process.env.MONGO_URI);
     console.log(`Auth MongoDB Connected: ${conn.host}`);
     return conn; // Return the connection object for the user authentication model
   } catch (error) {
