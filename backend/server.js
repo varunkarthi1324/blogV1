@@ -8,7 +8,12 @@ const postRoutes = require("./routes/postRoutes"); // Import post routes
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
 
 // MongoDB Connection
