@@ -3,10 +3,13 @@ const mongoose = require("mongoose");
 // Connect to the main blog database (blogDB)
 const connectMainDB = async () => {
   try {
-    const conn = await mongoose.connect("mongodb://localhost:27017/blogDB", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const conn = await mongoose.connect(
+      "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
     console.log(`Main MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error connecting to main DB: ${error.message}`);
@@ -18,7 +21,7 @@ const connectMainDB = async () => {
 const connectAuthDB = async () => {
   try {
     const conn = await mongoose.createConnection(
-      "mongodb://localhost:27017/blogDB",
+      "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
