@@ -7,7 +7,7 @@ const PostList = () => {
 
   useEffect(() => {
     axios
-      .get(process.env.Url)
+      .get(process.env.REACT_APP_API_URL)
       .then((response) => {
         setPosts(response.data);
       })
