@@ -12,7 +12,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB Connection
-const MONGO_URI = "mongodb://localhost:27017/blogDB"; // Replace with your MongoDB URI
+const MONGO_URI =
+  "mongodb+srv://vkvarunkarthikeyan:XHXLo6VL0IQHxbsX@cluster0.bnklpf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"; // Replace with your MongoDB URI
 mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,
