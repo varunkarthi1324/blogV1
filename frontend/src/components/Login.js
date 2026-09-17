@@ -6,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const { data } = await axios.post("/auth/login", {
         email,
@@ -24,6 +26,8 @@ const Login = ({ setIsAuthenticated }) => {
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       alert("Invalid credentials");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -37,6 +41,7 @@ const Login = ({ setIsAuthenticated }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           style={styles.input}
+          required
         />
         <input
           type="password"
@@ -44,9 +49,18 @@ const Login = ({ setIsAuthenticated }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={styles.input}
+          required
         />
-        <button type="submit" style={styles.button}>
-          Login
+        <button
+          type="submit"
+          style={styles.button}
+          disabled={isSubmitting}
+          aria-busy={isSubmitting}
+        >
+          {isSubmitting && (
+            <span className="loading-spinner" aria-hidden="true" />
+          )}
+          {isSubmitting ? "Logging in..." : "Login"}
         </button>
       </form>
       <p style={styles.switchText}>

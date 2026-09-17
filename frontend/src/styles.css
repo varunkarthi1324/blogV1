@@ -47,6 +47,29 @@ button:hover {
   background-color: #0056b3;
 }
 
+button:disabled {
+  background-color: #6c757d;
+  cursor: wait;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: -2px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: button-spin 0.7s linear infinite;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Post List Styles */
 .post-list {
   max-width: 800px;

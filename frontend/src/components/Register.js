@@ -2,13 +2,28 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s]).{8,20}$/;
+
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!passwordRegex.test(password)) {
+      setPasswordError(
+        "Password must be 8-20 characters and include an uppercase letter, lowercase letter, number, and special character.",
+      );
+      return;
+    }
+
+    setPasswordError("");
+    setIsSubmitting(true);
     try {
       await axios.post("/auth/register", {
         name,
@@ -20,9 +35,11 @@ const Register = () => {
     } catch (error) {
       console.error(
         "Registration error:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
       alert("Error registering user");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -36,6 +53,7 @@ const Register = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           style={styles.input}
+          required
         />
         <input
           type="email"
@@ -43,6 +61,7 @@ const Register = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           style={styles.input}
+          required
         />
         <input
           type="password"
@@ -50,9 +69,24 @@ const Register = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={styles.input}
+          required
+          maxLength={20}
+          minLength={8}
+          pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s]).{8,20}"
+          title="Use 8-20 characters with an uppercase letter, lowercase letter, number, and special character."
+          aria-invalid={Boolean(passwordError)}
         />
-        <button type="submit" style={styles.button}>
-          Register
+        {passwordError && <p style={styles.error}>{passwordError}</p>}
+        <button
+          type="submit"
+          style={styles.button}
+          disabled={isSubmitting}
+          aria-busy={isSubmitting}
+        >
+          {isSubmitting && (
+            <span className="loading-spinner" aria-hidden="true" />
+          )}
+          {isSubmitting ? "Registering..." : "Register"}
         </button>
       </form>
       <p style={styles.switchText}>
@@ -101,6 +135,12 @@ const styles = {
   link: {
     color: "#007bff",
     textDecoration: "none",
+  },
+  error: {
+    color: "#dc3545",
+    fontSize: "14px",
+    maxWidth: "80%",
+    margin: "0 0 10px",
   },
 };
 
