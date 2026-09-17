@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       // Assume you store the userId (author) and token in localStorage
       const author = localStorage.getItem("userId");
@@ -21,9 +23,11 @@ const CreatePost = () => {
     } catch (error) {
       console.error(
         "Error creating post:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
       alert("Error creating post");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -59,10 +63,16 @@ const CreatePost = () => {
             color: "white",
             border: "none",
             borderRadius: "5px",
-            cursor: "pointer",
+            cursor: isSubmitting ? "wait" : "pointer",
+            opacity: isSubmitting ? 0.7 : 1,
           }}
+          disabled={isSubmitting}
+          aria-busy={isSubmitting}
         >
-          Create Post
+          {isSubmitting && (
+            <span className="loading-spinner" aria-hidden="true" />
+          )}
+          {isSubmitting ? "Creating..." : "Create Post"}
         </button>
       </form>
     </div>
