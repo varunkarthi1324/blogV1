@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const CreatePost = () => {
+const CreatePost = ({ showToast }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,14 +18,14 @@ const CreatePost = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       await axios.post("/posts", { title, content, author }, config);
-      alert("Post created successfully");
+      showToast("Post created successfully.");
       navigate("/posts"); // Redirect to the posts page
     } catch (error) {
       console.error(
         "Error creating post:",
         error.response?.data || error.message,
       );
-      alert("Error creating post");
+      showToast("Unable to create the post.", "error");
     } finally {
       setIsSubmitting(false);
     }

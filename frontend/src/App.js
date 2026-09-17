@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -11,14 +11,28 @@ import Register from "./components/Register";
 import PostList from "./components/PostList";
 import CreatePost from "./components/CreatePost";
 import AdminDashboard from "./components/AdminDashboard";
+import Toast from "./components/Toast";
 
 function App() {
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  });
   const [isAuthenticated, setIsAuthenticated] = useState(() =>
     Boolean(localStorage.getItem("token")),
   );
   const [role, setRole] = useState(
     () => localStorage.getItem("role") || "user",
   );
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   // Logout function
   const handleLogout = () => {
@@ -27,6 +41,14 @@ function App() {
     localStorage.removeItem("role");
     setIsAuthenticated(false);
     setRole("user");
+  };
+
+  const toggleTheme = () => {
+    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
+  };
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
   };
 
   return (
@@ -66,6 +88,15 @@ function App() {
               </>
             )}
           </nav>
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+          >
+            <span aria-hidden="true">{theme === "light" ? "Moon" : "Sun"}</span>
+          </button>
         </header>
 
         <main className="page-content">
@@ -82,10 +113,14 @@ function App() {
                 <Login
                   setIsAuthenticated={setIsAuthenticated}
                   setRole={setRole}
+                  showToast={showToast}
                 />
               }
             />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="/register"
+              element={<Register showToast={showToast} />}
+            />
             <Route
               path="/posts"
               element={
@@ -100,7 +135,7 @@ function App() {
               path="/create-post"
               element={
                 isAuthenticated ? (
-                  <CreatePost />
+                  <CreatePost showToast={showToast} />
                 ) : (
                   <Navigate to="/login" replace />
                 )
@@ -127,6 +162,7 @@ function App() {
             />
           </Routes>
         </main>
+        <Toast toast={toast} onDismiss={() => setToast(null)} />
       </div>
     </Router>
   );

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setIsAuthenticated, setRole }) => {
+const Login = ({ setIsAuthenticated, setRole, showToast }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,11 +23,11 @@ const Login = ({ setIsAuthenticated, setRole }) => {
       localStorage.setItem("role", data.role || "user");
       setIsAuthenticated(true);
       setRole(data.role || "user");
-      alert("Login successful");
+      showToast("Login successful.");
       navigate("/posts");
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
-      alert("Invalid credentials");
+      showToast("Invalid credentials.", "error");
     } finally {
       setIsSubmitting(false);
     }

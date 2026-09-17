@@ -5,7 +5,7 @@ import axios from "axios";
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s]).{8,20}$/;
 
-const Register = () => {
+const Register = ({ showToast }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,13 +31,13 @@ const Register = () => {
         password,
       });
 
-      alert("Registration successful. Please log in.");
+      showToast("Registration successful. Please log in.");
     } catch (error) {
       console.error(
         "Registration error:",
         error.response?.data || error.message,
       );
-      alert("Error registering user");
+      showToast("Unable to register this account.", "error");
     } finally {
       setIsSubmitting(false);
     }
