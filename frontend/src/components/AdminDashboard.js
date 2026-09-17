@@ -6,6 +6,7 @@ const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState("");
+  const [deletingUserId, setDeletingUserId] = useState("");
 
   useEffect(() => {
     const loadOverview = async () => {
@@ -50,6 +51,31 @@ const AdminDashboard = () => {
       setError("The post could not be deleted.");
     } finally {
       setDeletingId("");
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    setDeletingUserId(userId);
+    setError("");
+    try {
+      await axios.delete(`/admin/users/${userId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setOverview((current) => ({
+        users: current.users.filter((user) => user._id !== userId),
+        posts: current.posts.filter((post) => post.author?._id !== userId),
+      }));
+    } catch (requestError) {
+      console.error(
+        "Error deleting user:",
+        requestError.response?.data || requestError.message,
+      );
+      setError(
+        requestError.response?.data?.message ||
+          "The user could not be deleted.",
+      );
+    } finally {
+      setDeletingUserId("");
     }
   };
 
@@ -101,6 +127,14 @@ const AdminDashboard = () => {
                 <span className={`role-pill role-${user.role}`}>
                   {user.role}
                 </span>
+                <button
+                  type="button"
+                  className="button button-danger"
+                  onClick={() => handleDeleteUser(user._id)}
+                  disabled={deletingUserId === user._id}
+                >
+                  {deletingUserId === user._id ? "Deleting..." : "Delete"}
+                </button>
               </div>
             ))}
           </div>
