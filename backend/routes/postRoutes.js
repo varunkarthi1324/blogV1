@@ -22,6 +22,7 @@ router.post("/", authenticate, async (req, res) => {
 // Get all posts sorted by creation date (newest first)
 router.get("/", async (req, res) => {
   try {
+    res.set("Cache-Control", "public, max-age=30, stale-while-revalidate=120");
     // Populate author name if needed.
     const posts = await Post.find()
       .sort({ createdAt: -1 })
