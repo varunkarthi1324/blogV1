@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = ({ setIsAuthenticated, setRole }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,7 +20,9 @@ const Login = ({ setIsAuthenticated }) => {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
+      localStorage.setItem("role", data.role || "user");
       setIsAuthenticated(true);
+      setRole(data.role || "user");
       alert("Login successful");
       navigate("/posts");
     } catch (error) {
@@ -32,15 +34,23 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Login</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
+    <section className="auth-layout">
+      <div className="auth-intro">
+        <span className="eyebrow">Welcome back</span>
+        <h1>Pick up where your ideas left off.</h1>
+        <p>Sign in to share thoughtful posts with your community.</p>
+      </div>
+      <form onSubmit={handleSubmit} className="form-card">
+        <div className="form-heading">
+          <span className="eyebrow">Your account</span>
+          <h2>Log in</h2>
+        </div>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={styles.input}
+          className="input-field"
           required
         />
         <input
@@ -48,12 +58,12 @@ const Login = ({ setIsAuthenticated }) => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
+          className="input-field"
           required
         />
         <button
           type="submit"
-          style={styles.button}
+          className="button button-primary"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
@@ -62,54 +72,15 @@ const Login = ({ setIsAuthenticated }) => {
           )}
           {isSubmitting ? "Logging in..." : "Login"}
         </button>
+        <p className="form-switch">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-link">
+            Register here
+          </Link>
+        </p>
       </form>
-      <p style={styles.switchText}>
-        Don't have an account?{" "}
-        <Link to="/register" style={styles.link}>
-          Register here
-        </Link>
-      </p>
-    </div>
+    </section>
   );
-};
-
-const styles = {
-  container: {
-    textAlign: "center",
-    padding: "20px",
-  },
-  heading: {
-    fontSize: "24px",
-    marginBottom: "20px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  input: {
-    width: "80%",
-    padding: "10px",
-    margin: "10px 0",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "10px 20px",
-    backgroundColor: "#007bff",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  switchText: {
-    marginTop: "20px",
-    fontSize: "14px",
-  },
-  link: {
-    color: "#007bff",
-    textDecoration: "none",
-  },
 };
 
 export default Login;

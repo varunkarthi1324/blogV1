@@ -44,15 +44,23 @@ const Register = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Register</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
+    <section className="auth-layout">
+      <div className="auth-intro auth-intro-register">
+        <span className="eyebrow">Join the conversation</span>
+        <h1>Make room for better ideas.</h1>
+        <p>Create an account and publish your perspective in minutes.</p>
+      </div>
+      <form onSubmit={handleSubmit} className="form-card">
+        <div className="form-heading">
+          <span className="eyebrow">New here?</span>
+          <h2>Create account</h2>
+        </div>
         <input
           type="text"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          style={styles.input}
+          className="input-field"
           required
         />
         <input
@@ -60,7 +68,7 @@ const Register = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={styles.input}
+          className="input-field"
           required
         />
         <input
@@ -68,7 +76,7 @@ const Register = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
+          className="input-field"
           required
           maxLength={20}
           minLength={8}
@@ -76,10 +84,10 @@ const Register = () => {
           title="Use 8-20 characters with an uppercase letter, lowercase letter, number, and special character."
           aria-invalid={Boolean(passwordError)}
         />
-        {passwordError && <p style={styles.error}>{passwordError}</p>}
+        {passwordError && <p className="form-error">{passwordError}</p>}
         <button
           type="submit"
-          style={styles.button}
+          className="button button-primary"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
@@ -88,60 +96,15 @@ const Register = () => {
           )}
           {isSubmitting ? "Registering..." : "Register"}
         </button>
+        <p className="form-switch">
+          Already have an account?{" "}
+          <Link to="/login" className="text-link">
+            Login here
+          </Link>
+        </p>
       </form>
-      <p style={styles.switchText}>
-        Already have an account?{" "}
-        <Link to="/login" style={styles.link}>
-          Login here
-        </Link>
-      </p>
-    </div>
+    </section>
   );
-};
-
-const styles = {
-  container: {
-    textAlign: "center",
-    padding: "20px",
-  },
-  heading: {
-    fontSize: "24px",
-    marginBottom: "20px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  input: {
-    width: "80%",
-    padding: "10px",
-    margin: "10px 0",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "10px 20px",
-    backgroundColor: "#007bff",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  switchText: {
-    marginTop: "20px",
-    fontSize: "14px",
-  },
-  link: {
-    color: "#007bff",
-    textDecoration: "none",
-  },
-  error: {
-    color: "#dc3545",
-    fontSize: "14px",
-    maxWidth: "80%",
-    margin: "0 0 10px",
-  },
 };
 
 export default Register;

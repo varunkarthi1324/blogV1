@@ -10,58 +10,77 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import PostList from "./components/PostList";
 import CreatePost from "./components/CreatePost";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState("user");
 
   // Check if the user is authenticated (e.g., token exists in localStorage)
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsAuthenticated(!!token); // Set to true if token exists
+    setRole(localStorage.getItem("role") || "user");
   }, []);
 
   // Logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("role");
     setIsAuthenticated(false);
+    setRole("user");
   };
 
   return (
     <Router>
-      <div style={styles.container}>
-        {/* Navigation Bar */}
-        <nav style={styles.nav}>
-          {!isAuthenticated ? (
-            <>
-              <Link to="/login" style={styles.navLink}>
-                Login
-              </Link>
-              <Link to="/register" style={styles.navLink}>
-                Register
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to="/posts" style={styles.navLink}>
-                Posts
-              </Link>
-              <Link to="/create-post" style={styles.navLink}>
-                Create Post
-              </Link>
-              <button onClick={handleLogout} style={styles.logoutButton}>
-                Logout
-              </button>
-            </>
-          )}
-        </nav>
+      <div className="app-shell">
+        <header className="site-header">
+          <Link to={isAuthenticated ? "/posts" : "/login"} className="brand">
+            <span className="brand-mark">B</span>
+            <span>Brightline</span>
+          </Link>
+          <nav className="nav-links" aria-label="Primary navigation">
+            {!isAuthenticated ? (
+              <>
+                <Link to="/login" className="nav-link">
+                  Login
+                </Link>
+                <Link to="/register" className="nav-link nav-link-accent">
+                  Register
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/posts" className="nav-link">
+                  Posts
+                </Link>
+                <Link to="/create-post" className="nav-link">
+                  Create Post
+                </Link>
+                {role === "admin" && (
+                  <Link to="/admin" className="nav-link nav-link-admin">
+                    Admin
+                  </Link>
+                )}
+                <button onClick={handleLogout} className="button button-quiet">
+                  Logout
+                </button>
+              </>
+            )}
+          </nav>
+        </header>
 
-        {/* Routes */}
-        <div style={styles.content}>
+        <main className="page-content">
           <Routes>
             <Route
               path="/login"
-              element={<Login setIsAuthenticated={setIsAuthenticated} />}
+              element={
+                <Login
+                  setIsAuthenticated={setIsAuthenticated}
+                  setRole={setRole}
+                />
+              }
             />
             <Route path="/register" element={<Register />} />
             <Route
@@ -84,56 +103,24 @@ function App() {
                 )
               }
             />
+            <Route
+              path="/admin"
+              element={
+                isAuthenticated && role === "admin" ? (
+                  <AdminDashboard />
+                ) : (
+                  <Navigate
+                    to={isAuthenticated ? "/posts" : "/login"}
+                    replace
+                  />
+                )
+              }
+            />
           </Routes>
-        </div>
+        </main>
       </div>
     </Router>
   );
 }
-
-// Centralized styles
-const styles = {
-  container: {
-    fontFamily: "Arial, sans-serif",
-    textAlign: "center",
-    margin: "0 auto",
-    maxWidth: "800px",
-    padding: "20px",
-    backgroundColor: "#f4f4f9",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  },
-  nav: {
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "#007bff",
-    padding: "10px",
-    borderRadius: "5px",
-    marginBottom: "20px",
-  },
-  navLink: {
-    color: "white",
-    textDecoration: "none",
-    margin: "0 15px",
-    fontSize: "16px",
-    fontWeight: "bold",
-  },
-  logoutButton: {
-    backgroundColor: "#dc3545",
-    color: "white",
-    border: "none",
-    padding: "10px 15px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontSize: "16px",
-    fontWeight: "bold",
-  },
-  content: {
-    padding: "20px",
-    backgroundColor: "#ffffff",
-    borderRadius: "5px",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-  },
-};
 
 export default App;

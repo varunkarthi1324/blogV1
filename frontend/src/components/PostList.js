@@ -16,31 +16,39 @@ const PostList = () => {
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Posts</h2>
+    <section className="feed-page">
+      <div className="page-heading page-heading-row">
+        <div>
+          <span className="eyebrow">The latest thinking</span>
+          <h1>Community posts</h1>
+          <p>Fresh perspectives from the Brightline community.</p>
+        </div>
+        <span className="post-count">{posts.length} posts</span>
+      </div>
       {posts.length === 0 ? (
-        <p>No posts available</p>
+        <div className="empty-state">No posts available yet.</div>
       ) : (
-        posts.map((post) => (
-          <div
-            key={post._id}
-            style={{
-              border: "1px solid #ccc",
-              margin: "10px",
-              padding: "10px",
-              borderRadius: "5px",
-            }}
-          >
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
-            {post.author && <p>Author: {post.author.name}</p>}
-            <p style={{ fontSize: "12px", color: "#555" }}>
-              Posted on: {new Date(post.createdAt).toLocaleString()}
-            </p>
-          </div>
-        ))
+        <div className="post-grid">
+          {posts.map((post) => (
+            <article className="post-card" key={post._id}>
+              <span className="post-kicker">From the community</span>
+              <h2>{post.title}</h2>
+              <p className="post-content">{post.content}</p>
+              <div className="post-meta">
+                <span>{post.author?.name || "Anonymous"}</span>
+                <span>
+                  {new Date(post.createdAt).toLocaleDateString(undefined, {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
       )}
-    </div>
+    </section>
   );
 };
 

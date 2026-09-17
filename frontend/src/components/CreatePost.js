@@ -32,40 +32,31 @@ const CreatePost = () => {
   };
 
   return (
-    <div style={{ padding: "20px", textAlign: "center" }}>
-      <h2>Create Post</h2>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+    <section className="editor-page">
+      <div className="page-heading">
+        <span className="eyebrow">Publish something meaningful</span>
+        <h1>Create a post</h1>
+        <p>Turn a passing thought into something worth returning to.</p>
+      </div>
+      <form onSubmit={handleSubmit} className="editor-card">
         <input
           type="text"
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          style={{ padding: "10px", width: "80%", margin: "10px 0" }}
+          className="input-field"
+          required
         />
         <textarea
           placeholder="Content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          style={{ padding: "10px", width: "80%", margin: "10px 0" }}
+          className="input-field input-textarea"
+          required
         />
         <button
           type="submit"
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: isSubmitting ? "wait" : "pointer",
-            opacity: isSubmitting ? 0.7 : 1,
-          }}
+          className="button button-primary"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
@@ -75,7 +66,7 @@ const CreatePost = () => {
           {isSubmitting ? "Creating..." : "Create Post"}
         </button>
       </form>
-    </div>
+    </section>
   );
 };
 
