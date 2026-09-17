@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
     }
 
     // Create the user without manually hashing the password
-    const user = await UserAuth.create({
+    await UserAuth.create({
       name,
       email,
       password, // let the pre-save hook handle hashing
@@ -51,11 +51,19 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, config.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role || "user" },
+      config.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      },
+    );
 
-    res.status(200).json({ token, userId: user._id });
+    res.status(200).json({
+      token,
+      userId: user._id,
+      role: user.role || "user",
+    });
   } catch (error) {
     console.error("Error logging in:", error.message);
     res.status(400).json({ error: error.message });

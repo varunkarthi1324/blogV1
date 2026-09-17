@@ -1,12 +1,17 @@
 const express = require("express");
 const Post = require("../models/Post");
+const authenticate = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Create a new post
-router.post("/", async (req, res) => {
-  const { title, content, author } = req.body;
+router.post("/", authenticate, async (req, res) => {
+  const { title, content } = req.body;
   try {
-    const post = await Post.create({ title, content, author });
+    const post = await Post.create({
+      title,
+      content,
+      author: req.user.id,
+    });
     res.status(201).json(post);
   } catch (error) {
     console.error("Error creating post:", error.message);

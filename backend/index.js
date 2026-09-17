@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes"); // Import post routes
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(
   cors({
     origin: "*",
     credentials: true,
-  })
+  }),
 );
 app.use(bodyParser.json());
 
@@ -26,6 +27,7 @@ mongoose
 // Mount routes
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes); // Mount post routes
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
   res.send("Blog website API is running");
