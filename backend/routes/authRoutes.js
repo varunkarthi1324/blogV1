@@ -4,11 +4,20 @@ const jwt = require("jsonwebtoken");
 const config = require("../config.json"); // Load the config.json file
 const UserAuth = require("../models/UserAuth"); // Import the UserAuth model
 const router = express.Router(); // Initialize the router
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s]).{8,20}$/;
 
 // Register route
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
   try {
+    if (!passwordRegex.test(password || "")) {
+      return res.status(400).json({
+        message:
+          "Password must be 8-20 characters and include an uppercase letter, lowercase letter, number, and special character.",
+      });
+    }
+
     // Check if the email already exists
     const existingUser = await UserAuth.findOne({ email });
     if (existingUser) {
