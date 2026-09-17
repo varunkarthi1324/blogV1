@@ -7,6 +7,7 @@
   --accent: #d95d39;
   --accent-dark: #a83f24;
   --mint: #dcece1;
+  --badge-text: #35604a;
   --sun: #f3d98b;
   --soft: #fbfcfa;
   --border-soft: rgba(220, 228, 222, 0.9);
@@ -25,6 +26,7 @@
   --accent: #ef7955;
   --accent-dark: #ff9a78;
   --mint: #29483a;
+  --badge-text: #d8f2df;
   --sun: #66552a;
   --soft: #16201e;
   --border-soft: rgba(65, 83, 75, 0.9);
@@ -394,7 +396,7 @@ a {
   padding: 8px 12px;
   border-radius: 999px;
   background: var(--mint);
-  color: #35604a;
+  color: var(--badge-text);
   font-size: 13px;
   font-weight: 800;
   white-space: nowrap;
@@ -411,6 +413,51 @@ a {
   border-radius: 14px;
   background: var(--surface);
   box-shadow: 0 8px 22px rgba(24, 35, 34, 0.04);
+}
+
+.post-skeleton {
+  min-height: 220px;
+}
+
+.skeleton-line {
+  display: block;
+  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    var(--soft) 25%,
+    var(--line) 50%,
+    var(--soft) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-kicker {
+  width: 35%;
+  height: 12px;
+  margin-bottom: 18px;
+}
+
+.skeleton-title {
+  width: 75%;
+  height: 28px;
+  margin-bottom: 22px;
+}
+
+.skeleton-copy {
+  width: 92%;
+  height: 14px;
+  margin-bottom: 10px;
+}
+
+.skeleton-copy-short {
+  width: 62%;
+}
+
+@keyframes skeleton-shimmer {
+  to {
+    background-position: -200% 0;
+  }
 }
 
 .post-card h2 {
