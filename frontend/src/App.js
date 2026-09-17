@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -13,15 +13,12 @@ import CreatePost from "./components/CreatePost";
 import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [role, setRole] = useState("user");
-
-  // Check if the user is authenticated (e.g., token exists in localStorage)
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token); // Set to true if token exists
-    setRole(localStorage.getItem("role") || "user");
-  }, []);
+  const [isAuthenticated, setIsAuthenticated] = useState(() =>
+    Boolean(localStorage.getItem("token")),
+  );
+  const [role, setRole] = useState(
+    () => localStorage.getItem("role") || "user",
+  );
 
   // Logout function
   const handleLogout = () => {
@@ -37,8 +34,8 @@ function App() {
       <div className="app-shell">
         <header className="site-header">
           <Link to={isAuthenticated ? "/posts" : "/login"} className="brand">
-            <span className="brand-mark">B</span>
-            <span>Brightline</span>
+            <span className="brand-mark">E</span>
+            <span>echofluxx</span>
           </Link>
           <nav className="nav-links" aria-label="Primary navigation">
             {!isAuthenticated ? (
@@ -73,6 +70,12 @@ function App() {
 
         <main className="page-content">
           <Routes>
+            <Route
+              path="/"
+              element={
+                <Navigate to={isAuthenticated ? "/posts" : "/login"} replace />
+              }
+            />
             <Route
               path="/login"
               element={
@@ -114,6 +117,12 @@ function App() {
                     replace
                   />
                 )
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <Navigate to={isAuthenticated ? "/posts" : "/login"} replace />
               }
             />
           </Routes>

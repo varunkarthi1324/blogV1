@@ -21,7 +21,7 @@ const PostList = () => {
         <div>
           <span className="eyebrow">The latest thinking</span>
           <h1>Community posts</h1>
-          <p>Fresh perspectives from the Brightline community.</p>
+          <p>Fresh perspectives from the echofluxx community.</p>
         </div>
         <span className="post-count">{posts.length} posts</span>
       </div>
