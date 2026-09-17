@@ -22,6 +22,29 @@ router.get("/overview", async (req, res) => {
   }
 });
 
+router.delete("/users/:id", async (req, res) => {
+  if (req.user.id === req.params.id) {
+    return res
+      .status(400)
+      .json({ message: "You cannot delete your own account." });
+  }
+
+  try {
+    const deletedUser = await UserAuth.findByIdAndDelete(req.params.id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    await Post.deleteMany({ author: req.params.id });
+    res
+      .status(200)
+      .json({ message: "User and their posts deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting user:", error.message);
+    res.status(400).json({ message: "Unable to delete user." });
+  }
+});
+
 router.delete("/posts/:id", async (req, res) => {
   try {
     const deletedPost = await Post.findByIdAndDelete(req.params.id);
